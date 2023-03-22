@@ -1,0 +1,16 @@
+from sklearn.naive_bayes import GaussianNB
+import pandas as pd
+data = pd.read_csv("/Users/nivetha/Downloads/play_tennis.csv")
+features = {"outlook": ["Sunny", "Overcast", "Rain"],"temp": ["Hot", "Mild", "Cool"],"humidity": ["High", "Normal"],"wind": ["Weak", "Strong"]}
+for feature in features:
+    encoding = {}
+    for i, value in enumerate(features[feature]):
+        encoding[value] = i
+    data[feature] = data[feature].map(encoding)
+x = data.iloc[:, :-1]
+y = data.iloc[:, -1]
+classifier = GaussianNB()
+new_data = [[features["outlook"].index("Rain"), features["temp"].index("Mild"), features["humidity"].index("High"), features["wind"].index("Weak")]]
+classifier.fit(x, y)
+prediction = classifier.predict(new_data)
+print(prediction)
